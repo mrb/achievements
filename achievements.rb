@@ -42,23 +42,25 @@ module AchievementEngine
     # a single instance or an array:
     # {:context => context, :category => category}
     def self.find_achievements(conditions_hash)
+      query = []
       context  = conditions_hash.delete(:context)
       category = conditions_hash.delete(:category)
 
-      if context.present?
-
-      end
-
-      if category.present?
-
-      end
+           
     end
+  end
+
+  # User, lightweight representation of user for convenience
+  class User
+    attr_accessor :id
   end
   
   # Achievement, basis of counters
   class Achievement
     attr_accessor :key
     attr_accessor :threshold
+    attr_accessor :categories
+    attr_accessor :context
   
     def initialize
     
@@ -73,10 +75,6 @@ module AchievementEngine
 
     def initialize(context, user_id, key_prefix)
       @key = "#{context}:user:#{user_id}:#{key_prefix}"
-    end
-  
-    def incr
-  
     end
   end
 end
