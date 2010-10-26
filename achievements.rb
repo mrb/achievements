@@ -15,10 +15,6 @@ class Achievements
     @achievements = []
   end
 
-  def self.redis
-    @redis
-  end
-
   def bind(achievement_json)
     @achievements
   end
@@ -44,11 +40,10 @@ class Counter
 
   def initialize(context, user_id, key_prefix)
     @key = "#{context}:user:#{user_id}:#{key_prefix}"
-    @redis = Achievements.redis
   end
   
   def incr
-    @redis.incr @key
+  
   end
 end
 
