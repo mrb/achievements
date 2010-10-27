@@ -10,8 +10,14 @@ module AchievementEngine
   end
   
   # Convenience Class Methods for ActiveRecord::Base like User Classes
-  class IncludeClassMethods
-    
+  module IncludeClassMethods
+    def achievable
+      @achievements_engine = Achievements.new
+    end
+
+    def bind(achievement_hash)
+      @achievements_engine.bind(achievement_hash)
+    end
   end
 
   # Achivements Interface Class
@@ -20,10 +26,13 @@ module AchievementEngine
     attr_accessor :achievements
     
     def initialize
-      @redis ||= Redis.connect
+      connect if @redis.nil?
       @achievements = []
     end
     
+    def connect
+      @redis ||= Redis.connect
+    end
     
     def bind(achievement_hash)
       if achievement = Achievement.new(achievement_hash)
@@ -34,7 +43,7 @@ module AchievementEngine
     # Accepts a hash with the following format:
     # { :context => context, :categories => [categories] }
     def trigger(action_item_hash)
-      
+ 
     end
 
     ## Class Methods
@@ -46,16 +55,14 @@ module AchievementEngine
       query = []
       
       context  = conditions_hash.delete(:context)
-      category = conditions_hash.delete(:category)
-      
-           
+      category = conditions_hash.delete(:category)    
     end
   end
 
   # User, lightweight representation of user for convenience
   class User
     attr_accessor :id
-
+    attr_accessor :counters
   end
   
   # Achievement, basis of counters
@@ -65,8 +72,11 @@ module AchievementEngine
     attr_accessor :categories
     attr_accessor :context
   
-    def initialize
-    
+    def initialize(achievement_hash)
+      @key = achievement_hash.delete(:key)
+      @threshold = achievement_hash.delete(:threshold)
+      @categories = achievement_hash.delete(:categories)
+      @context = achievement_hash.delete(:context)
     end
   end
   
