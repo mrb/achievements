@@ -17,7 +17,7 @@ module AchievementEngine
       # 
       # achieveable {:contexts => [:context1,:context2]}
       #
-      def achievable
+      def achievable(contexts)
         @achievements_engine = Achievements.new
       end
 
