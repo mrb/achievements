@@ -23,7 +23,8 @@ module AchievementEngine
       @redis ||= Redis.connect
       @achievements = []
     end
-
+    
+    
     def bind(achievement_hash)
       if achievement = Achievement.new(achievement_hash)
         @achievements << achievement
@@ -36,16 +37,17 @@ module AchievementEngine
       
     end
 
-    # Class Methods
+    ## Class Methods
 
     # Finds achievements with context or category.  Both can be either
     # a single instance or an array:
     # {:context => context, :category => category}
     def self.find_achievements(conditions_hash)
       query = []
+      
       context  = conditions_hash.delete(:context)
       category = conditions_hash.delete(:category)
-
+      
            
     end
   end
@@ -53,6 +55,7 @@ module AchievementEngine
   # User, lightweight representation of user for convenience
   class User
     attr_accessor :id
+
   end
   
   # Achievement, basis of counters
