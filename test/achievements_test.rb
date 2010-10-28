@@ -23,10 +23,17 @@ context "Achievements" do
     class Item
 
     end
-
+    
+    User.redis.flushall
+    
     @u = User.new(1)
   end
 
+  test "simple redis test" do
+    User.redis.set "test010203818203802", 1
+    assert_equal User.redis.get("test010203818203802"), "1"
+  end
+  
   test "first time trigger should create two counters and increment both" do
     @u.trigger :context1, :one_time
   end

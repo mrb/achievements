@@ -21,6 +21,16 @@ module Achievements
         @engine = Engine.new(contexts)
       end
 
+      # Convenience method for access to achievements engine
+      def engine
+        @engine
+      end
+      
+      # Convenience method for access to redis connection
+      def redis
+        @engine.redis
+      end
+      
       # Binds an achievement with a specific counter threshold. Use as
       # many as you'd like.
       #
@@ -51,7 +61,7 @@ module Achievements
       # trigger agent_id, context, name
       #
       def trigger(agent_id, context, name)
-        
+        @engine.trigger agent_id, context, name
       end
     end
 
@@ -60,7 +70,7 @@ module Achievements
     # Agent instance level achievement trigger.  Automatically sends
     # agent id along with context and name to the AchievementEngine
     def trigger(context,name)
-      puts "ok"
+      self.class.engine.trigger @id, context, name
     end
   end
   
@@ -108,6 +118,8 @@ module Achievements
     # context, agent_id, name
     def trigger(context, agent_id, name)
       # Increment counter
+      counter = Counter.new(context,agent_id,name)
+      incr counter
     end
 
     # incr key
@@ -145,8 +157,8 @@ module Achievements
     attr_accessor :agent_id
     attr_accessor :key
 
-    def initialize(context, agent_id, key_prefix)
-      @key = "#{context}:agent:#{agent_id}:#{key_prefix}"
+    def initialize(context, agent_id, name)
+      @key = "#{context}:agent:#{agent_id}:#{name}"
     end
 
   end
