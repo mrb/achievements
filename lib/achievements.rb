@@ -2,7 +2,7 @@
 require 'rubygems'
 require 'redis'
 
-module Achievements
+module AchievementEngine
   module UserIncludes
     # Convenience methods for instantiating an engine and adding achievements
     def self.included(base)
@@ -79,8 +79,9 @@ module Achievements
     end
   end
   
+
   # Achivements Interface Class
-  class Engine
+  class Achievements
     attr_accessor :redis
     attr_accessor :achievements
     
