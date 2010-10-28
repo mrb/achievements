@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-context "AchievementEngine" do
+context "Achievements" do
   setup do
     class User
       attr_accessor :id
@@ -16,7 +16,8 @@ context "AchievementEngine" do
     end
 
     class Achievement
-
+      attr_accessor :name, :context, :threshold
+      include Achievements::AchievementIncludes
     end
 
     class Item
@@ -26,7 +27,7 @@ context "AchievementEngine" do
     @u = User.new(1)
   end
 
-  test "should create one " do
+  test "first time trigger should create two counters and increment both" do
     @u.trigger :context1, :one_time
   end
 end

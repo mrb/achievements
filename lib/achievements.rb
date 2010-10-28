@@ -40,7 +40,7 @@ module Achievements
       #
       def bind_all(object_array)
         object_array.each do |object|
-          bind object.context, object.name, object.threshold
+          @engine.bind object.context, object.name, object.threshold
         end
       end
 
@@ -100,12 +100,26 @@ module Achievements
         @achievements << achievement
       end
     end
-    
+
+    # Increment counter
+    # Check threshold
+    # Output results
+    #
     # context, agent_id, name
     def trigger(context, agent_id, name)
-      
+      # Increment counter
     end
 
+    # incr key
+    def incr(counter)
+      @redis.incr counter
+    end
+    
+    # decr key
+    def decr(counter)
+      @redis.decr counter
+    end
+    
     ## Class Methods
 
    
@@ -124,7 +138,8 @@ module Achievements
     end
   end
   
-  # Formats strings for Redis counter incrs
+  # Counter class is really a Redis key factory.  Responsibility of
+  # communicating with Redis belongs with the engine.
   class Counter
     attr_accessor :context
     attr_accessor :agent_id
@@ -133,5 +148,6 @@ module Achievements
     def initialize(context, agent_id, key_prefix)
       @key = "#{context}:agent:#{agent_id}:#{key_prefix}"
     end
+
   end
 end
