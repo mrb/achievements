@@ -37,6 +37,11 @@ context "Achievements" do
   test "context instantiation" do
     assert_equal User.engine.contexts, [:context1,:context2]
   end
+
+  test "achievement instantiation" do
+    assert_equal User.engine.achievements, [{:context1 => [:one_time]},
+                                            {:context2 => [:three_times]}]
+  end
   
   test "first time trigger should create two counters and increment both" do
     @u.trigger :context1, :one_time

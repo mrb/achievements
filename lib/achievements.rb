@@ -98,7 +98,7 @@ module Achievements
     def initialize(contexts)
       connect if @redis.nil?
       @contexts = contexts
-      @achievements = []
+      @achievements = @contexts.collect{|c| {c=>[]}}
     end
     
     def connect
@@ -107,7 +107,8 @@ module Achievements
     
     def bind(context,name,threshold)
       if achievement = Achievement.new(context,name,threshold)
-        @achievements << achievement
+        @achievements[context] << achievement
+        @redis.set "#{context}:#{name}", threshold
       end
     end
 
@@ -125,7 +126,7 @@ module Achievements
       counter = Counter.new(context,agent_id,name)
       result = incr counter
       # Check Threshold
-      if result > #
+      if result > @redis.get("#{context}:#{name}")
         achieved << [context,name]
         return achieved
       else
