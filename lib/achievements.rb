@@ -101,23 +101,14 @@ module Achievements
       end
     end
     
-    # Accepts a hash with the following format:
-    # { :context => context, :categories => [categories] }
-    def trigger(action_item_hash)
- 
+    # context, agent_id, name
+    def trigger(context, agent_id, name)
+      
     end
 
     ## Class Methods
 
-    # Finds achievements with context or category.  Both can be either
-    # a single instance or an array:
-    # {:context => context, :category => category}
-    def self.find_achievements(conditions_hash)
-      query = []
-      
-      context  = conditions_hash.delete(:context)
-      category = conditions_hash.delete(:category)    
-    end
+   
   end
   
   # Achievement, basis of counters
