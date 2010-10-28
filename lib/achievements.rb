@@ -60,8 +60,8 @@ module Achievements
       #
       # trigger agent_id, context, name
       #
-      def trigger(agent_id, context, name)
-        @engine.trigger agent_id, context, name
+      def trigger(context, agent_id, name)
+        @engine.trigger context, agemt_id, name
       end
     end
 
@@ -70,7 +70,7 @@ module Achievements
     # Agent instance level achievement trigger.  Automatically sends
     # agent id along with context and name to the AchievementEngine
     def trigger(context,name)
-      self.class.engine.trigger @id, context, name
+      self.class.engine.trigger context, @id, name
     end
   end
   
@@ -117,9 +117,13 @@ module Achievements
     #
     # context, agent_id, name
     def trigger(context, agent_id, name)
-      # Increment counter
+      # Increment parent counter
+      counter = Counter.new(context,agent_id,"parent")
+      incr counter
+      # Increment child counter
       counter = Counter.new(context,agent_id,name)
       incr counter
+      # Check Threshold
     end
 
     # incr key
@@ -133,8 +137,15 @@ module Achievements
     end
     
     ## Class Methods
-
-   
+    def self.find_achievement(name)
+      results = @achievements.delete_if{|achievement| achievement.name != name}
+      if result = results.uniq[0]
+        result
+      else
+        nil
+      end
+    end
+       
   end
   
   # Achievement, basis of counters
@@ -159,6 +170,10 @@ module Achievements
 
     def initialize(context, agent_id, name)
       @key = "#{context}:agent:#{agent_id}:#{name}"
+    end
+
+    def to_s
+      @key
     end
 
   end

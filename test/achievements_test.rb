@@ -33,8 +33,13 @@ context "Achievements" do
     User.redis.set "test010203818203802", 1
     assert_equal User.redis.get("test010203818203802"), "1"
   end
+
+  test "context instantiation" do
+    assert_equal User.engine.contexts, [:context1,:context2]
+  end
   
   test "first time trigger should create two counters and increment both" do
     @u.trigger :context1, :one_time
+    assert_equal User.redis.get("context1:agent:1:one_time"), "1"
   end
 end
