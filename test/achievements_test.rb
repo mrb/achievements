@@ -40,6 +40,12 @@ context "Achievements" do
   
   test "first time trigger should create two counters and increment both" do
     @u.trigger :context1, :one_time
+    assert_equal User.redis.get("context1:agent:1:parent"), "1"
     assert_equal User.redis.get("context1:agent:1:one_time"), "1"
+  end
+
+  test "one time trigger should return achievement name as threshold is crossed" do
+    response = @u.trigger :context1, :one_time
+    assert_equal response, [[:context1,:one_time]]
   end
 end

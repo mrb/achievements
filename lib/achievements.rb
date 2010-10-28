@@ -117,13 +117,20 @@ module Achievements
     #
     # context, agent_id, name
     def trigger(context, agent_id, name)
+      achieved = []
       # Increment parent counter
       counter = Counter.new(context,agent_id,"parent")
       incr counter
       # Increment child counter
       counter = Counter.new(context,agent_id,name)
-      incr counter
+      result = incr counter
       # Check Threshold
+      if result > #
+        achieved << [context,name]
+        return achieved
+      else
+        return []
+      end
     end
 
     # incr key
@@ -134,6 +141,10 @@ module Achievements
     # decr key
     def decr(counter)
       @redis.decr counter
+    end
+
+    def deactiveate(counter)
+      @redis.set counter, "ACHIEVED"
     end
     
     ## Class Methods
