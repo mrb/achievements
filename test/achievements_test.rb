@@ -4,7 +4,7 @@ context "AchievementEngine" do
   setup do
     class User
       attr_accessor :id
-      include Achievements::UserIncludes
+      include Achievements::AgentIncludes
       achievable [:context1, :context2]
 
       bind :context1, :one_time, 1

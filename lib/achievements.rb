@@ -3,7 +3,7 @@ require 'rubygems'
 require 'redis'
 
 module Achievements
-  module UserIncludes
+  module AgentIncludes
     # Convenience methods for instantiating an engine and adding achievements
     def self.included(base)
       base.extend IncludeClassMethods
@@ -45,20 +45,20 @@ module Achievements
       end
 
       # Trigger a bound achievement method.  Since this is a class
-      # level method, you must include the user id along with the
+      # level method, you must include the agent id along with the
       # method call
       #
-      # trigger user_id, context, name
+      # trigger agent_id, context, name
       #
-      def trigger(user_id, context, name)
+      def trigger(agent_id, context, name)
         
       end
     end
 
-    # User instance methods
+    # Agent instance methods
 
-    # User instance level achievement trigger.  Automatically sends
-    # user id along with context and name to the AchievementEngine
+    # Agent instance level achievement trigger.  Automatically sends
+    # agent id along with context and name to the AchievementEngine
     def trigger(context,name)
       puts "ok"
     end
@@ -119,12 +119,6 @@ module Achievements
       category = conditions_hash.delete(:category)    
     end
   end
-
-  # User, lightweight representation of user for convenience
-  class User
-    attr_accessor :id
-    attr_accessor :counters
-  end
   
   # Achievement, basis of counters
   class Achievement
@@ -142,11 +136,11 @@ module Achievements
   # Formats strings for Redis counter incrs
   class Counter
     attr_accessor :context
-    attr_accessor :user_id
+    attr_accessor :agent_id
     attr_accessor :key
 
-    def initialize(context, user_id, key_prefix)
-      @key = "#{context}:user:#{user_id}:#{key_prefix}"
+    def initialize(context, agent_id, key_prefix)
+      @key = "#{context}:agent:#{agent_id}:#{key_prefix}"
     end
   end
 end
