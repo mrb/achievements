@@ -2,7 +2,7 @@
 require 'rubygems'
 require 'redis'
 
-module AchievementEngine
+module Achievements
   module UserIncludes
     # Convenience methods for instantiating an engine and adding achievements
     def self.included(base)
@@ -15,10 +15,10 @@ module AchievementEngine
       # the contexts, which instantiate context specific counters.  Use
       # only once.
       # 
-      # achieveable {:contexts => [:context1,:context2]}
+      # achieveable [:context1,:context2]
       #
       def achievable(contexts)
-        @achievements_engine = Achievements.new
+        @engine = Engine.new(contexts)
       end
 
       # Binds an achievement with a specific counter threshold. Use as
@@ -27,7 +27,7 @@ module AchievementEngine
       # bind :context, :name, threshold
       #
       def bind(context, name, threshold)
-        @achievements_engine.bind(achievement_hash)
+        @engine.bind(context,name,threshold)
       end
 
       # Alternately, bind an entire array of achievement objects.  To
@@ -60,7 +60,7 @@ module AchievementEngine
     # User instance level achievement trigger.  Automatically sends
     # user id along with context and name to the AchievementEngine
     def trigger(context,name)
-      
+      puts "ok"
     end
   end
   
@@ -79,14 +79,15 @@ module AchievementEngine
     end
   end
   
-
   # Achivements Interface Class
-  class Achievements
+  class Engine
     attr_accessor :redis
     attr_accessor :achievements
+    attr_accessor :contexts
     
-    def initialize
+    def initialize(contexts)
       connect if @redis.nil?
+      @contexts = contexts
       @achievements = []
     end
     
@@ -94,8 +95,8 @@ module AchievementEngine
       @redis ||= Redis.connect
     end
     
-    def bind(achievement_hash)
-      if achievement = Achievement.new(achievement_hash)
+    def bind(context,name,threshold)
+      if achievement = Achievement.new(context,name,threshold)
         @achievements << achievement
       end
     end
@@ -127,16 +128,14 @@ module AchievementEngine
   
   # Achievement, basis of counters
   class Achievement
-    attr_accessor :key
+    attr_accessor :name
     attr_accessor :threshold
-    attr_accessor :categories
     attr_accessor :context
   
-    def initialize(achievement_hash)
-      @key = achievement_hash.delete(:key)
-      @threshold = achievement_hash.delete(:threshold)
-      @categories = achievement_hash.delete(:categories)
-      @context = achievement_hash.delete(:context)
+    def initialize(context, name, threshold)
+      @name = name
+      @threshold = threshold
+      @context = context
     end
   end
   
