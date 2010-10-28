@@ -39,8 +39,11 @@ context "Achievements" do
   end
 
   test "achievement instantiation" do
-    assert_equal User.engine.achievements, [{:context1 => [:one_time]},
-                                            {:context2 => [:three_times]}]
+  
+  end
+
+  test "binding achievement should create key value pair with name, context, threshold" do
+    assert_equal User.redis.get("")
   end
   
   test "first time trigger should create two counters and increment both" do

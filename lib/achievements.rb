@@ -98,7 +98,8 @@ module Achievements
     def initialize(contexts)
       connect if @redis.nil?
       @contexts = contexts
-      @achievements = @contexts.collect{|c| {c=>[]}}
+      @achievements = {}
+      @contexts.collect{|c| @achievements[c] = []}
     end
     
     def connect
@@ -126,7 +127,7 @@ module Achievements
       counter = Counter.new(context,agent_id,name)
       result = incr counter
       # Check Threshold
-      if result > @redis.get("#{context}:#{name}")
+      if result > (@redis.get("#{context}:#{name}") || 0)
         achieved << [context,name]
         return achieved
       else
@@ -149,14 +150,7 @@ module Achievements
     end
     
     ## Class Methods
-    def self.find_achievement(name)
-      results = @achievements.delete_if{|achievement| achievement.name != name}
-      if result = results.uniq[0]
-        result
-      else
-        nil
-      end
-    end
+   
        
   end
   
@@ -171,6 +165,11 @@ module Achievements
       @threshold = threshold
       @context = context
     end
+
+    def to_hash
+      {:name => @name, :threshold => @threshold, :context => @context}
+    end
+
   end
   
   # Counter class is really a Redis key factory.  Responsibility of
