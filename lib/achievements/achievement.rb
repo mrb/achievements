@@ -6,9 +6,9 @@ module Achievements
     attr_accessor :context
   
     def initialize(context, name, threshold)
+      @context = context
       @name = name
       @threshold = threshold
-      @context = context
     end
 
     def to_hash

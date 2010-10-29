@@ -1,4 +1,6 @@
 module Achievements
+  # Thresholds should be a set
+  
   class Engine
     attr_accessor :achievements
     attr_accessor :contexts
@@ -11,9 +13,13 @@ module Achievements
     end
     
     def bind(context,name,threshold)
+      return if !@contexts.include?(context)
       if achievement = Achievement.new(context,name,threshold)
         @achievements[context] << achievement
-        @redis.set "#{context}:#{name}", threshold
+                
+        [threshold].flatten.each do |thresh|
+          @redis.sadd "#{context}:#{name}:threshold", thresh.to_s
+        end
       end
     end
 
@@ -24,19 +30,24 @@ module Achievements
     # context, agent_id, name
     def trigger(context, agent_id, name)
       achieved = []
+      
       # Increment parent counter
-      counter = Counter.new(context,agent_id,"parent")
+      counter = Counter.make(context,agent_id,"parent")
       incr counter
+
       # Increment child counter
-      counter = Counter.new(context,agent_id,name)
+      counter = Counter.make(context,agent_id,name)
       result = incr counter
+
       # Check Threshold
-      if result.to_s >= @redis.get("#{context}:#{name}")
+    
+      if  @redis.sismember("#{context}:#{name}:threshold", result) == true
         achieved << [context,name]
         return achieved
       else
         return []
       end
+      
     end
 
     # incr key
