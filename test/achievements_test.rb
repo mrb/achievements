@@ -69,6 +69,14 @@ context "Achievements" do
     assert_equal response, [[:context2, :three_times]]
   end
 
+   test "three time trigger should return nothing after thresh is crossed" do
+    @u.trigger :context2, :three_times
+    @u.trigger :context2, :three_times
+    @u.trigger :context2, :three_times
+    response = @u.trigger :context2, :three_times
+    assert_equal response, []
+  end
+
   test "x triggers in context should increment parent counter x times" do
     @u.trigger :context2, :three_times
     @u.trigger :context2, :three_times
@@ -81,5 +89,24 @@ context "Achievements" do
   
   test "multi-threshold achievement should have three threshold counters" do
     assert_equal @redis.smembers("context3:multiple_levels:threshold").sort, ["1","10","5"]
+  end
+
+  test "multi-threshold achievement should return achievements in order" do
+    results = []
+
+    10.times do
+      results << @u.trigger(:context3, :multiple_levels)
+    end
+    
+    assert_equal results, [[[:context3, :multiple_levels]],
+              [],
+              [],
+              [],
+              [[:context3, :multiple_levels]],
+              [],
+              [],
+              [],
+              [],
+              [[:context3, :multiple_levels]]]
   end
 end
