@@ -37,11 +37,17 @@ of the achievements on the application side.
       bind :context3, :multiple_levels, ["1","5","10"]
     end
     
+    # Make a new user 
+    >> u = User.new; u.id = 1
+
+    # Trigger some counters
     >> u.trigger :context2, :three_times
     => []
     >> u.trigger :context2, :three_times
     => []
     >> u.trigger :context2, :three_times
+
+    # Threshold crossed response
     => [[:context2, :three_times]]
 
 ## Details
@@ -73,6 +79,8 @@ Your Achievement class must have a name, context, and threshold method
 in order to adapt to the Engine, in order to be consumed by the Agent
 class directly.
 
+## Project Metainfo
+
 ### TODO
 
 ### Contributing
@@ -89,6 +97,4 @@ class directly.
 
 ### Author
 
-Michael R. Bernstein
-*michaelrbernstein@gmail.com*
-twitter.com/mrb_bk
+Michael R. Bernstein - *michaelrbernstein@gmail.com* - twitter.com/mrb_bk
