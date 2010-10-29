@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email             = "michaelrbernstein@gmail.com"
   s.authors           = [ "Michael R. Bernstein" ]
 
-  s.files             = %w( README.markdown Rakefile LICENSE HISTORY.md )
+  s.files             = %w( README.markdown Rakefile LICENSE HISTORY.markdown )
   s.files            += Dir.glob("lib/**/*")
   s.files            += Dir.glob("bin/**/*")
   s.files            += Dir.glob("test/**/*")
