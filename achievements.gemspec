@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.files            += Dir.glob("bin/**/*")
   s.files            += Dir.glob("test/**/*")
   s.files            += Dir.glob("tasks/**/*")
-  s.executables       = [ "achievements", "achievements-web" ]
+  # s.executables       = [ "achievements", "achievements-web" ]
 
   s.extra_rdoc_files  = [ "LICENSE", "README.markdown" ]
   s.rdoc_options      = ["--charset=UTF-8"]

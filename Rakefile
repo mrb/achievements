@@ -1,3 +1,4 @@
+$LOAD_PATH.unshift 'lib'
 #
 # Publishing
 #
@@ -12,5 +13,5 @@ task :publish do
   sh "git push origin v#{Achievements::Version}"
   sh "git push origin master"
   sh "git clean -fd"
-  exec "rake pages"
+  
 end
