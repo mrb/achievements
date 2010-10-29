@@ -20,10 +20,7 @@ the system and makes "score" based calculations less expensive.
 
 ## Achievements
 
-Achievements are counters with thresholds.  Set the threshold to 1 for
-an operation that you want to happen once.  It is up to the
-application which uses Achievements to determine where triggers should
-be fired, and what to do with the output from the system.
+Achievements are named, contextualized counters with one or more thresholds. 
 
 ## Output
 
