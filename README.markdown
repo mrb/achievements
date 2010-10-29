@@ -11,18 +11,53 @@ The application Achievements was developed for uses a User class to
 instantiate the Engine and an Achievement class to persist the details
 of the achievements on the application side.
 
-## Contexts
+## Achievements, Briefly
+
+    require 'achievements'
+
+    # Simple User (agent) class
+
+    class User
+      # Include hooks for Agent class implementation
+      include Achievements::AgentIncludes
+
+      attr_accessor :id
+
+      # Instantiantes engine with contexts
+      achievable [:context1, :context2, :context3]
+      
+      # One achievement, one level
+      bind :context1, :one_time, "1"
+      
+      # Two achievements, one level
+      bind :context2, :one_time, "1"
+      bind :context2, :three_times, "3"
+
+      # One achievement, multiple levels
+      bind :context3, :multiple_levels, ["1","5","10"]
+    end
+    
+    >> u.trigger :context2, :three_times
+    => []
+    >> u.trigger :context2, :three_times
+    => []
+    >> u.trigger :context2, :three_times
+    => [[:context2, :three_times]]
+
+## Details
+
+### Contexts
 
 Contexts are categories for achievements.  Every time an achievement
 is triggered, it's "parent" or context counter is also triggered and
 incremented.  This makes it easier to gauge overall participation in
 the system and makes "score" based calculations less expensive.
 
-## Achievements
+### Achievements
 
 Achievements are named, contextualized counters with one or more thresholds. 
 
-## Output
+### Output
 
 When a threshold isn't crossed, and nothing changes, the engine will
 return nothing when triggered.
@@ -32,10 +67,28 @@ symbols which correspond to the names of the achievements which have
 been reached.  Your application can consume this output as you see
 fit.
 
-## Achievement API Compliance
+### Achievement API Compliance
 
 Your Achievement class must have a name, context, and threshold method
-in order to adapt to the Engine.
+in order to adapt to the Engine, in order to be consumed by the Agent
+class directly.
 
 ### TODO
 
+### Contributing
+
+0. Do some work on the library, commit
+1. [Fork][1] Achievements
+2. Create a topic branch - `git checkout -b my_branch`
+3. Push to your branch - `git push origin my_branch`
+4. Create an [Issue][2] with a link to your branch
+5. That's it!
+
+[1]: http://help.github.com/forking/
+[2]: http://github.com/mrb/achievements/issues
+
+### Author
+
+Michael R. Bernstein
+*michaelrbernstein@gmail.com*
+twitter.com/mrb_bk
