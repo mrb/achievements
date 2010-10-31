@@ -13,6 +13,8 @@ of the achievements on the application side.
 
 ## Achievements, Briefly
 
+Here's how you get achievements into your application:
+
     require 'achievements'
 
      class Engine
@@ -31,6 +33,18 @@ of the achievements on the application side.
       bind :context3, :multiple_levels, ["1","5","10"]
     end
 
+Here's how you could interact with it in a session with the above
+class loaded:
+
+    # Grab the engine from the top level Module:
+    >> engine = Achievements.engine
+    
+    # Start your triggering! Choose an ID to work with and go.
+    # Triggering the one_time achievement should return the threshold
+    # information after being triggered once:
+    >> engine.trigger :context1, "1", :one_time
+    => [[:context1,:one_time,"1"]]
+    
 ## Details
 
 ### Contexts
