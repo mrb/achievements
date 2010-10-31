@@ -1,15 +1,16 @@
 module Achievements
-  # Thresholds should be a set
+  # Triggering multiple at once
   
   class Engine
     attr_accessor :achievements
     attr_accessor :contexts
+    attr_accessor :redis
     
-    def initialize(contexts)
+    def initialize(contexts, redis)
       @contexts = contexts
+      @redis = redis
       @achievements = {}
       @contexts.collect{|c| @achievements[c] = []}
-      @redis = Achievements.redis
     end
     
     def bind(context,name,threshold)

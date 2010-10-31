@@ -83,6 +83,8 @@ class directly.
 
 ### TODO
 
+* Better Redis interface methods for making/closing/keeping conneciton
+
 ### Contributing
 
 0. Do some work on the library, commit

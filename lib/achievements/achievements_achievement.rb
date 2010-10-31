@@ -1,5 +1,5 @@
 module Achievements
-  module AchievementIncludes
+  module AchievementsAchievement
     # Convenience methods
     def self.included(base)
       base.extend IncludeClassMethods
