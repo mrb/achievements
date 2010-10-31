@@ -23,12 +23,12 @@ module Achievements
         end
       end
     end
-
-    # Increment counter
-    # Check threshold
-    # Output results
-    #
+    
+    # The trigger method accepts:
     # context, agent_id, name
+    #
+    # And returns:
+    # context, name, threshold
     def trigger(context, agent_id, name)
       achieved = []
       
@@ -43,7 +43,7 @@ module Achievements
       # Check Threshold
     
       if  @redis.sismember("#{context}:#{name}:threshold", result) == true
-        achieved << [context,name]
+        achieved << [context,name, result.to_s]
         return achieved
       else
         return []

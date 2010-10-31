@@ -44,6 +44,30 @@ context "Achievement Restructure Test" do
 
   test "Trigger should return crossed threshold" do
     response = @engine.trigger(:context1,"1",:one_time)
-    assert_equal [[:context1,:one_time]], response
+    assert_equal [[:context1,:one_time, "1"]], response
+  end
+
+  test "Trigger with threshold higher than 1" do
+    @engine.trigger(:context2,"1",:three_times)
+    @engine.trigger(:context2,"1",:three_times)
+    result = @engine.trigger(:context2,"1",:three_times)
+    assert_equal [[:context2,:three_times, "3"]], result
+  end
+
+  test "Multiple thresholds" do
+    results = []
+    10.times do 
+      results << @engine.trigger(:context3,"1",:multiple_levels)
+    end
+    assert_equal results, [[[:context3, :multiple_levels, "1"]],
+                          [],
+                          [],
+                          [],
+                          [[:context3, :multiple_levels, "5"]],
+                          [],
+                          [],
+                          [],
+                          [],
+                          [[:context3, :multiple_levels, "10"]]]
   end
 end
