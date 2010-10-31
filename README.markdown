@@ -15,17 +15,11 @@ of the achievements on the application side.
 
     require 'achievements'
 
-    # Simple User (agent) class
+     class Engine
+      include Achievements::AchievementsEngine
 
-    class User
-      # Include hooks for Agent class implementation
-      include Achievements::AgentIncludes
-
-      attr_accessor :id
-
-      # Instantiantes engine with contexts
-      achievable [:context1, :context2, :context3]
-      
+      make_engine [:context1, :context2, :context3]
+            
       # One achievement, one level
       bind :context1, :one_time, "1"
       
@@ -36,19 +30,6 @@ of the achievements on the application side.
       # One achievement, multiple levels
       bind :context3, :multiple_levels, ["1","5","10"]
     end
-    
-    # Make a new user 
-    >> u = User.new; u.id = 1
-
-    # Trigger some counters
-    >> u.trigger :context2, :three_times
-    => []
-    >> u.trigger :context2, :three_times
-    => []
-    >> u.trigger :context2, :three_times
-
-    # Threshold crossed response
-    => [[:context2, :three_times]]
 
 ## Details
 
