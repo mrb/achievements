@@ -17,20 +17,9 @@ Here's how you get achievements into your application:
 
     require 'achievements'
 
-     class Engine
+    class Engine
       include Achievements::AchievementsEngine
 
-      make_engine [:context1, :context2, :context3]
-            
-      # One achievement, one level
-      bind :context1, :one_time, "1"
-      
-      # Two achievements, one level
-      bind :context2, :one_time, "1"
-      bind :context2, :three_times, "3"
-
-      # One achievement, multiple levels
-      bind :context3, :multiple_levels, ["1","5","10"]
     end
 
 Here's how you could interact with it in a session with the above
@@ -44,6 +33,9 @@ class loaded:
     # information after being triggered once:
     >> engine.trigger :context1, "1", :one_time
     => [[:context1,:one_time,"1"]]
+
+For the most up to date look at what this library is supposed to do,
+please refer to the test directory.
     
 ## Details
 
@@ -65,7 +57,7 @@ return nothing when triggered.
 
 When a threshold is crossed, the engine will return an array of
 symbols which correspond to the names of the achievements which have
-been reached.  Your application can consume this output as you see
+been reached, along with the threshold being crossed.  Your application can consume this output as you see
 fit.
 
 ### Achievement API Compliance
