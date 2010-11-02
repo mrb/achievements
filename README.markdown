@@ -18,21 +18,35 @@ Here's how you get achievements into your application:
     require 'achievements'
 
     class Engine
+      # Include the AchievementsEngine module from the Achievements
+      # gem to make your Engine class an AchievementsEngine class. 
       include Achievements::AchievementsEngine
+      
+      # Now you can define achievements in this class.  One at a time
+      # using the achievement method:
+
+      # One achievement, one level
+      achievement :context1, :one_time, 1
+      
+      # Two achievements, one level
+      achievement :context2, :one_time, 1
+      achievement :context2, :three_times, 3
+
+      # One achievement, multiple levels
+      achievement :context3, :multiple_levels, [1, 5, 10]
+      
+      # Or all at once using the achievements (plural) method.  Right
+      # now this relies on the existence of a class which responds to
+      # id, name, and achievement methods:
+      achievements Achievement.all
 
     end
 
 Here's how you could interact with it in a session with the above
 class loaded:
 
-    # Grab the engine from the top level Module:
-    >> engine = Achievements.engine
     
-    # Start your triggering! Choose an ID to work with and go.
-    # Triggering the one_time achievement should return the threshold
-    # information after being triggered once:
-    >> engine.trigger :context1, "1", :one_time
-    => [[:context1,:one_time,"1"]]
+
 
 For the most up to date look at what this library is supposed to do,
 please refer to the test directory.
