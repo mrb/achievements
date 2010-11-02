@@ -39,14 +39,17 @@ Here's how you get achievements into your application:
       # now this relies on the existence of a class which responds to
       # id, name, and achievement methods:
       achievements Achievement.all
-
     end
 
 Here's how you could interact with it in a session with the above
 class loaded:
 
-    
+    # Grab the engine 
+    @engine = Achievements.engine
 
+    # Achieve something!
+    @engine.achieve(:context1, 1, :one_time)
+    => [[:context1,:one_time,"1"]]    
 
 For the most up to date look at what this library is supposed to do,
 please refer to the test directory.
