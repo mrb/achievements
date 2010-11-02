@@ -6,18 +6,15 @@ module Achievements
     attr_accessor :contexts
     attr_accessor :redis
     
-    def initialize(contexts, redis)
-      @contexts = contexts
+    def initialize(redis)
+      @contexts = []
       @redis = redis
       @achievements = {}
-      @contexts.collect{|c| @achievements[c] = []}
     end
     
-    def bind(context,name,threshold)
-      return if !@contexts.include?(context)
+    def achievement(context,name,threshold)
+      @contexts << context if !@contexts.include?(context)
       if achievement = Achievement.new(context,name,threshold)
-        @achievements[context] << achievement
-                
         [threshold].flatten.each do |thresh|
           @redis.sadd "#{context}:#{name}:threshold", thresh.to_s
         end
@@ -29,7 +26,7 @@ module Achievements
     #
     # And returns:
     # context, name, threshold
-    def trigger(context, agent_id, name)
+    def achieve(context, agent_id, name)
       achieved = []
       
       # Increment parent counter

@@ -7,16 +7,21 @@ module Achievements
   
     # Convenience Class Methods for ActiveRecord::Base like User Classes
     module IncludeClassMethods
-     
+      def engine_class(engine_class)
+        @engine_class = engine_class
+      end
 
+      def engine
+        @engine_class
+      end
     end
 
     # Agent instance methods
 
     # Agent instance level achievement trigger.  Automatically sends
     # agent id along with context and name to the AchievementEngine
-    def trigger(context,name)
-      Achievements.engine.trigger context, @id, name
+    def achieve(context,name)
+      self.class.engine.achieve context, @id, name
     end
   end
 end

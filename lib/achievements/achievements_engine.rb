@@ -17,7 +17,7 @@ module Achievements
       #
       def make_engine(contexts)
         @redis = Achievements.redis
-        @engine = Engine.new(contexts, @redis)
+        @engine = Engine.new(@redis)
       end
       
       # Convenience method for accessing the current engine instance directly
@@ -35,8 +35,9 @@ module Achievements
       #
       # bind :context, :name, threshold
       #
-      def bind(context, name, threshold)
-        @engine.bind(context,name,threshold)
+      def achievement(context, name, threshold)
+        make_engine(context) if !@engine
+        @engine.achievement(context,name,threshold)
       end
       
       # Alternately, bind an entire array of achievement objects.  To
@@ -47,9 +48,10 @@ module Achievements
       #
       # bind_all Achievement.all
       #
-      def bind_all(object_array)
+      def achievements(object_array)
         object_array.each do |object|
-          @engine.bind object.context, object.name, object.threshold
+          make_engine(context) if !@engine
+          @engine.achievement object.context, object.name, object.threshold
         end
       end
 
@@ -59,13 +61,13 @@ module Achievements
       #
       # trigger agent_id, context, name
       #
-      def trigger(context, agent_id, name)
-        @engine.trigger context, agent_id, name
+      def achieve(context, agent_id, name)
+        @engine.achieve context, agent_id, name
       end
 
-      def trigger_multi(context_name_array)
+      def achieves(context_name_array)
         context_name_array.each do |cna|
-          Achievements.engine.trigger cna[0], @id, cna[1]
+          Achievements.engine.achieve cna[0], @id, cna[1]
         end
       end
       

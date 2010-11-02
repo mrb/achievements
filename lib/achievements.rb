@@ -14,4 +14,8 @@ module Achievements
   def self.redis
     @redis || @redis = Redis.connect
   end
+
+  def self.engine
+    AchievementsEngine.engine
+  end
 end
