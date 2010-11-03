@@ -20,6 +20,13 @@ module Achievements
         end
       end
     end
+
+    def achievements(achievement_array)
+      return unless achievement_array.is_a?(Array)
+      achievement_array.each do |achievement|
+        achievement(achievement.context, achievement.name, achievement.threshold)
+      end
+    end
     
     # The trigger method accepts:
     # context, agent_id, name
@@ -45,6 +52,10 @@ module Achievements
       else
         return []
       end
+      
+    end
+
+    def achieves
       
     end
 

@@ -6,12 +6,45 @@ context "Achievement Restructure Test" do
     # Flush redis before each test
     Achievements.redis.flushall
 
+    # A sample achievement class.  The instances implement the
+    # appropriate methods to be consumed by the engine class, and the
+    # class implements a ".all" method to emulate popular ORMs.  This
+    # intends to show that it's easy to store your achievements in a
+    # database and load them in from there.
+    class Achievement
+      attr_accessor :context, :name, :threshold
+
+      def self.all
+        @all
+      end
+  
+      def initialize(context,name,threshold)
+        @context = context
+        @name = name
+        @threshold = threshold
+      end
+
+      def self.snew(context,name,threshold)
+        @all ||= []
+        @all << self.new(context,name,threshold)
+      end
+    end
+
+    # Make some achievements for the achievements method demonstration
+    [[:context4,:five_times,5],[:context5,:two_times,2],[:context6,:once,1]].each do |a|
+      Achievement.snew(a[0],a[1],a[2])
+    end
+
     # A sample engine class that demonstrates how to use the
     # AchievementsEngine include to instantiate the engine, make
     # achievements, etc.
     class Engine
       include Achievements::AchievementsEngine
-
+      
+      # You can either add one achievement at a time with the
+      # achievement method which accepts the name of the achievement's
+      # context, name, and threshold:
+      
       # One achievement, one level
       achievement :context1, :one_time, 1
       
@@ -21,6 +54,16 @@ context "Achievement Restructure Test" do
 
       # One achievement, multiple levels
       achievement :context3, :multiple_levels, [1, 5, 10]
+
+      # Or you can add multiple achievements at once with the
+      # achievements method, which accepts an array.  This array must
+      # contain objects which implement id, name, and context
+      # methods.  The example below assumes that you have an "all"
+      # class method on the Achievement class which returns an array
+      # of all instances of that class:
+  
+      # Passing an array of compliant objects to the achievements method
+      achievements Achievement.all
     end
 
     # A sample agent class that demonstrates how to use the
@@ -35,7 +78,7 @@ context "Achievement Restructure Test" do
         @id = id
       end
     end
-
+    
     # Make a new user with an ID different from the one used in most tests
     @user = User.new(10)
 
@@ -45,7 +88,8 @@ context "Achievement Restructure Test" do
   end
 
   test "Engine gets assigned appropriate contexts" do
-    assert_equal @engine.contexts, [:context1,:context2,:context3]
+    assert_equal @engine.contexts, [:context1, :context2, :context3,
+                                    :context4, :context5, :context6]
   end
 
   test "Contexts get threshold sets" do
@@ -91,5 +135,9 @@ context "Achievement Restructure Test" do
     assert_equal @user.achieve(:context1,:one_time), []
     @engine.achieve(:context1,1,:one_time)
     assert_equal @engine.achieve(:context1,1,:one_time),[]
+  end
+
+  test "Achievement class should have three members" do
+    assert_equal Achievement.all.length, 3
   end
 end
