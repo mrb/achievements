@@ -17,22 +17,23 @@ context "Achievement Restructure Test" do
       def self.all
         @all
       end
-  
+
+      def self.all=(a)
+        @all ||= []
+        @all << a
+      end
+      
       def initialize(context,name,threshold)
-        @context = context
+        self.context = context
         @name = name
         @threshold = threshold
-      end
-
-      def self.snew(context,name,threshold)
-        @all ||= []
-        @all << self.new(context,name,threshold)
+        self.class.all = self
       end
     end
 
     # Make some achievements for the achievements method demonstration
     [[:context4,:five_times,5],[:context5,:two_times,2],[:context6,:once,1]].each do |a|
-      Achievement.snew(a[0],a[1],a[2])
+      Achievement.new(a[0],a[1],a[2])
     end
 
     # A sample engine class that demonstrates how to use the
@@ -137,7 +138,19 @@ context "Achievement Restructure Test" do
     assert_equal @engine.achieve(:context1,1,:one_time),[]
   end
 
+  test "Members of achievement class should implement methods" do
+    Achievement.all.each do |a|
+      assert a.respond_to?(:context)
+      assert a.respond_to?(:name)
+      assert a.respond_to?(:id)
+    end
+  end
+
   test "Achievement class should have three members" do
     assert_equal Achievement.all.length, 3
+  end
+
+  test "Achieving more than one achievement at a time" do
+    assert_equal @engine.achieves([[:context4,1,:five_times],[:context4,1,:five_times]]), [[],[]]
   end
 end
