@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-context "Achievement Restructure Test" do
+context "Achievement Test" do
   
   setup do
     # Flush redis before each test
