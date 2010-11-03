@@ -85,6 +85,11 @@ class directly.
 
 ## Project Metainfo
 
+### Dependencies
+
+* A running Redis server
+* The Redis Ruby Gem
+
 ### TODO
 
 * Better Redis interface methods for making/closing/keeping conneciton

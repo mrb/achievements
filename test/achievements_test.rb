@@ -124,6 +124,7 @@ context "Achievement Restructure Test" do
       results << @engine.achieve(:context3,1,:multiple_levels)
     end
     assert_equal results, [[[:context3, :multiple_levels, "1"]], [], [], [], [[:context3, :multiple_levels, "5"]], [], [], [], [], [[:context3, :multiple_levels, "10"]]]
+    assert_equal @redis.get("agent:1"), "10"
   end
 
   test "Achieving from the agent class" do
@@ -150,7 +151,11 @@ context "Achievement Restructure Test" do
     assert_equal Achievement.all.length, 3
   end
 
-  test "Achieving more than one achievement at a time" do
+  test "Achieving more than one achievement at a time, no thresholds crossed" do
     assert_equal @engine.achieves([[:context4,1,:five_times],[:context4,1,:five_times]]), [[],[]]
+  end
+
+  test "Achieving more than one at a time, threshold crosssed" do
+    assert_equal @engine.achieves([[:context1,1,:one_time],[:context2,1,:three_times]]), [[:context1,:one_time,"1"],[]]
   end
 end

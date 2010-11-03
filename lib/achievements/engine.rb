@@ -1,6 +1,4 @@
 module Achievements
-  # Triggering multiple at once
-  
   class Engine
     attr_accessor :achievements
     attr_accessor :contexts
@@ -36,6 +34,10 @@ module Achievements
     def achieve(context, agent_id, name)
       achieved = []
       
+      # Increment user counter
+      counter = "agent:#{agent_id}"
+      incr counter
+      
       # Increment parent counter
       counter = Counter.make(context,agent_id,"parent")
       incr counter
@@ -45,7 +47,6 @@ module Achievements
       result = incr counter
 
       # Check Threshold
-    
       if  @redis.sismember("#{context}:#{name}:threshold", result) == true
         achieved << [context,name, result.to_s]
         return achieved
@@ -58,7 +59,7 @@ module Achievements
     def achieves(achievements)
       response = []
       achievements.each do |a|
-        response << achieve(a[0],a[1],a[2])
+        response << achieve(a[0],a[1],a[2]).flatten
       end
       response
     end
