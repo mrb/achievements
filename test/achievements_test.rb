@@ -158,4 +158,21 @@ context "Achievement Test" do
   test "Achieving more than one at a time, threshold crosssed" do
     assert_equal @engine.achieves([[:context1,1,:one_time],[:context2,1,:three_times]]), [[:context1,:one_time,"1"],[]]
   end
+
+  test "Any trigger should increment agent counter" do
+    20.times do
+      @engine.achieve(:context1,20,:one_time)
+    end
+    assert_equal @redis.get("agent:20"), "20"
+  end
+
+  test "Score retrieval" do
+    20.times do
+      @user.achieve(:context1,:one_time)
+    end
+   
+    assert_equal @user.score, ["20"]
+    assert_equal @user.score(:context1), ["20","20"]
+    assert_equal @user.score(:context1,:one_time), ["20","20","20"]
+  end
 end

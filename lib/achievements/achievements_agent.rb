@@ -23,5 +23,10 @@ module Achievements
     def achieve(context,name)
       self.class.engine.achieve context, @id, name
     end
+
+    # Determine a user's 'score'
+    def score(context=nil,name=nil)
+      self.class.engine.score(@id, context, name)
+    end
   end
 end

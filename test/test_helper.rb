@@ -39,7 +39,7 @@ at_exit do
 end
 
 puts "Starting redis for testing at localhost:9736..."
-`redis-server #{dir}/redis-test.conf`
+'redis-server #{dir}/redis-test.conf'
 # AchievementEngine.redis = 'localhost:9736'
 
 ##

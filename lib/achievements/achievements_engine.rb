@@ -70,6 +70,12 @@ module Achievements
           @engine.achieve cna[0], @id, cna[1]
         end
       end
+
+      #
+      def score(agent_id,context,name)
+        @engine.score(agent_id,context,name)
+      end
+    
     end
   end
 end
