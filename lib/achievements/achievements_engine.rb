@@ -13,9 +13,9 @@ module Achievements
       # the contexts, which instantiate context specific counters.  Use
       # only once.
       # 
-      # make_engine [:context1,:context2]
+      # make_engine 
       #
-      def make_engine(contexts)
+      def make_engine
         @redis = Achievements.redis
         @engine = Engine.new(@redis)
       end
@@ -36,7 +36,7 @@ module Achievements
       # bind :context, :name, threshold
       #
       def achievement(context, name, threshold)
-        make_engine(context) if !@engine
+        make_engine if !@engine
         @engine.achievement(context,name,threshold)
       end
       
@@ -50,7 +50,7 @@ module Achievements
       #
       def achievements(object_array)
         object_array.each do |object|
-          make_engine(context) if !@engine
+          make_engine if !@engine
           @engine.achievement(object.context, object.name, object.threshold)
         end
       end

@@ -73,8 +73,7 @@ context "Achievement Test" do
     class User
       attr_accessor :id
       include Achievements::AchievementsAgent
-      engine_class Engine
-      
+          
       def initialize(id)
         @id = id
       end

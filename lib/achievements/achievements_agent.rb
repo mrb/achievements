@@ -12,7 +12,7 @@ module Achievements
       end
 
       def engine
-        @engine_class
+        @engine_class || @engine_class = ::Engine
       end
     end
 
