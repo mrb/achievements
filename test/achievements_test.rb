@@ -29,6 +29,10 @@ context "Achievement Test" do
         @threshold = threshold
         self.class.all = self
       end
+
+      def achievement_slug
+        name
+      end
     end
 
     # Make some achievements for the achievements method demonstration

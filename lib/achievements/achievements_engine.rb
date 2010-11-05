@@ -33,7 +33,7 @@ module Achievements
       # Binds an achievement with a specific counter threshold. Use as
       # many as you'd like.
       #
-      # bind :context, :name, threshold
+      # achievement :context, :name, threshold
       #
       def achievement(context, name, threshold)
         make_engine if !@engine
@@ -46,12 +46,12 @@ module Achievements
       #
       # For example, when using with rails:
       #
-      # bind_all Achievement.all
+      #  achievements  Achievement.all
       #
       def achievements(object_array)
         object_array.each do |object|
           make_engine if !@engine
-          @engine.achievement(object.context, object.name, object.threshold)
+          @engine.achievement(object.context, object.achievement_slug, object.threshold)
         end
       end
 
@@ -59,7 +59,7 @@ module Achievements
       # level method, you must include the agent id along with the
       # method call
       #
-      # trigger agent_id, context, name
+      # achieve agent_id, context, name
       #
       def achieve(context, agent_id, name)
         @engine.achieve context, agent_id, name
