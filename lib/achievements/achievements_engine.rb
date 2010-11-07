@@ -49,8 +49,8 @@ module Achievements
       #  achievements  Achievement.all
       #
       def achievements(object_array)
+	make_engine if !@engine
         object_array.each do |object|
-          make_engine if !@engine
           @engine.achievement(object.context, object.achievement_slug, object.threshold)
         end
       end
