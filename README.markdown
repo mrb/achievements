@@ -103,13 +103,14 @@ class directly.
 4. Create an [Issue][2] with a link to your branch
 5. That's it!
 
-[1]: http://help.github.com/forking/
-[2]: http://github.com/mrb/achievements/issues
-
 ### Author
 
 Michael R. Bernstein - *michaelrbernstein@gmail.com* - twitter.com/mrb_bk
 
 ### Sponsorship
 
-The Achievements project was 100% sponsored by [Intersect NYC]:(http://intersectnyc.com) in an ongoing effort to give back to the Open Source community.  
+The Achievements project was 100% sponsored by [Intersect NYC][3] in an ongoing effort to give back to the Open Source community.  
+
+[1]: http://help.github.com/forking/
+[2]: http://github.com/mrb/achievements/issues
+[3]: http://intersectnyc.com
