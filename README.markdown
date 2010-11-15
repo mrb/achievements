@@ -109,3 +109,7 @@ class directly.
 ### Author
 
 Michael R. Bernstein - *michaelrbernstein@gmail.com* - twitter.com/mrb_bk
+
+### Sponsorship
+
+The Achievements project was 100% sponsored by [Intersect NYC]:(http://intersectnyc.com) in an ongoing effort to give back to the Open Source community.  
