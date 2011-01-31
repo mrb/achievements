@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files  = [ "LICENSE", "README.markdown" ]
   s.rdoc_options      = ["--charset=UTF-8"]
 
-  s.add_dependency "redis", "~> 2.0.11"
+  s.add_dependency "redis", "~> 2.1.1"
   
   s.description = <<description
     Achievements is an abstract, Redis-backed, counter based achievements engine
