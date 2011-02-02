@@ -12,7 +12,7 @@ require 'achievements/version'
 
 module Achievements
   def self.redis
-    @redis || @redis = Redis.connect
+    @redis || @redis = Redis.connect(:url => ENV['REDIS_URL'] ? ENV['REDIS_URL'] : nil)
   end
 
   def self.engine
